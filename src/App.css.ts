@@ -130,3 +130,29 @@ export const Form = styled.form`
     cursor: pointer;
   }
 `;
+
+export const StyledModalContent = styled(ModalContent)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: black;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    width: 90%;
+  }
+
+  @media (min-width: 601px) {
+    width: 400px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+`;

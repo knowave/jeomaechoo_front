@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useEffect, useState } from "react";
 import {
   AppContainer,
@@ -8,6 +7,7 @@ import {
   SpinButton,
   Title,
   Winner,
+  StyledModalContent,
   ModalContent,
   Form,
   GlobalStyle,
@@ -25,6 +25,7 @@ const App: React.FC<{}> = () => {
   const [retryCount, setRetryCount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     fetchMenus(setMenus);
@@ -65,6 +66,8 @@ const App: React.FC<{}> = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setShowForm(false);
+    setShowSuccessModal(false);
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -81,10 +84,15 @@ const App: React.FC<{}> = () => {
       await addMenu(newMenu, imageFile);
       setMenus((prevMenus) => [...prevMenus, newMenu]);
       setShowForm(false);
-      setRetryCount(0);
+      setShowSuccessModal(true);
     } catch (error) {
       console.error("Error adding menu:", error);
     }
+  };
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    window.location.reload(); // 새로고침
   };
 
   return (
@@ -120,21 +128,37 @@ const App: React.FC<{}> = () => {
 
         <Modal open={showModal} onClose={handleCloseModal}>
           <ModalContent>
-            <h2>메뉴를 같이 추가해봐요</h2>
+            <h2>추가되었으면 하는 메뉴가 있다면 같이 추가해봐요! 🙇‍♂️</h2>
             <button onClick={handleAddMenu}>추가하러가기</button>
             <button onClick={handleCloseModal}>다음에 하기</button>
           </ModalContent>
         </Modal>
-      </AppContainer>
 
-      {showForm && (
-        <Form onSubmit={handleFormSubmit}>
-          <h2>메뉴 추가</h2>
-          <input type="text" name="name" placeholder="메뉴 이름" required />
-          <input type="file" name="image" accept="image/*" required />
-          <button type="submit">추가</button>
-        </Form>
-      )}
+        {showForm && (
+          <Modal open={true} onClose={handleCloseModal}>
+            <StyledModalContent>
+              <Form onSubmit={handleFormSubmit}>
+                <h3>메뉴 추가</h3>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="메뉴 이름"
+                  required
+                />
+                <input type="file" name="image" accept="image/*" required />
+                <button type="submit">추가</button>
+              </Form>
+            </StyledModalContent>
+          </Modal>
+        )}
+
+        <Modal open={showSuccessModal} onClose={handleSuccessModalClose}>
+          <ModalContent>
+            <h3>추가 완료</h3>
+            <button onClick={handleSuccessModalClose}>확인</button>
+          </ModalContent>
+        </Modal>
+      </AppContainer>
     </>
   );
 };
