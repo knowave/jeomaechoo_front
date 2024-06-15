@@ -1,5 +1,4 @@
 import styled, { createGlobalStyle } from "styled-components";
-import Modal from "@mui/material/Modal";
 
 export const GlobalStyle = createGlobalStyle`
   * {
