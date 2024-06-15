@@ -11,6 +11,12 @@ import {
   ModalContent,
   Form,
   GlobalStyle,
+  WhiteButton,
+  BlackButton,
+  StyledInput,
+  CustomGreenButton,
+  ButtonContainer,
+  ImagePreview,
 } from "./App.css";
 import { Menu } from "./interfaces/menu.interface";
 import { fetchMenus } from "./axios/menu";
@@ -26,6 +32,7 @@ const App: React.FC<{}> = () => {
   const [showModal, setShowModal] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   useEffect(() => {
     fetchMenus(setMenus);
@@ -75,13 +82,11 @@ const App: React.FC<{}> = () => {
     const formData = new FormData(e.target as HTMLFormElement);
     const newMenu: Menu = {
       name: formData.get("name") as string,
-      image: URL.createObjectURL(formData.get("image") as File),
+      image: URL.createObjectURL(selectedImage as File),
     };
 
-    const imageFile = formData.get("image") as File;
-
     try {
-      await addMenu(newMenu, imageFile);
+      await addMenu(newMenu, selectedImage as File);
       setMenus((prevMenus) => [...prevMenus, newMenu]);
       setShowForm(false);
       setShowSuccessModal(true);
@@ -92,7 +97,14 @@ const App: React.FC<{}> = () => {
 
   const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
-    window.location.reload(); // 새로고침
+    window.location.reload();
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setSelectedImage(files[0]);
+    }
   };
 
   return (
@@ -128,9 +140,9 @@ const App: React.FC<{}> = () => {
 
         <Modal open={showModal} onClose={handleCloseModal}>
           <ModalContent>
-            <h2>추가되었으면 하는 메뉴가 있다면 같이 추가해봐요! 🙇‍♂️</h2>
-            <button onClick={handleAddMenu}>추가하러가기</button>
-            <button onClick={handleCloseModal}>다음에 하기</button>
+            <h2>메뉴를 추가해볼까요?🙇‍♂️</h2>
+            <BlackButton onClick={handleAddMenu}>추가하러가기</BlackButton>
+            <WhiteButton onClick={handleCloseModal}>다음에 하기</WhiteButton>
           </ModalContent>
         </Modal>
 
@@ -145,8 +157,28 @@ const App: React.FC<{}> = () => {
                   placeholder="메뉴 이름"
                   required
                 />
-                <input type="file" name="image" accept="image/*" required />
-                <button type="submit">추가</button>
+                <CustomGreenButton htmlFor="file_upload">
+                  <StyledInput
+                    type="file"
+                    id="file_upload"
+                    name="image"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    required
+                  />
+                  이미지 업로드
+                </CustomGreenButton>
+                {selectedImage && (
+                  <ImagePreview>
+                    <strong>선택한 이미지:</strong> {selectedImage.name}
+                  </ImagePreview>
+                )}
+                <ButtonContainer>
+                  <BlackButton type="submit">추가</BlackButton>
+                  <WhiteButton onClick={handleSuccessModalClose}>
+                    취소
+                  </WhiteButton>
+                </ButtonContainer>
               </Form>
             </StyledModalContent>
           </Modal>

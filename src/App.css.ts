@@ -156,3 +156,50 @@ export const StyledModalContent = styled(ModalContent)`
     margin: 0;
   }
 `;
+
+export const Button = styled.button`
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+export const CustomGreenButton = styled.label`
+  background-color: green;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  display: block; // inline-block 에서 block 으로 변경
+  font-weight: bold;
+  text-align: left;
+`;
+
+export const WhiteButton = styled(Button)`
+  background-color: white;
+  color: black;
+`;
+
+export const BlackButton = styled(Button)`
+  background-color: black;
+  color: white;
+`;
+
+export const StyledInput = styled.input`
+  display: none;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+export const ImagePreview = styled.div`
+  margin-top: 10px;
+  font-size: 12px;
+`;
