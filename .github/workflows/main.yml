@@ -1,0 +1,36 @@
+name: Jeomaechoo Front Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@master
+        
+      - name: Use Node.js 18
+        uses: actions/setup-node@v2
+        with:
+            node-version: 18.x
+
+      - name: Install Dependencies
+        run: |
+            npm install -g yarn
+            yarn install
+
+      - name: Build React Application
+        run: yarn build
+
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp \
+          --recursive \
+          --region ap-northeast-2 \
+          build s3://jeomaechoo-front
