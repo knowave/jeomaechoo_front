@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SERVER_URL } from "../../env";
+import { SERVER_URL } from "../env";
 
 export const sendWinningMenu = async (id: string) => {
   try {

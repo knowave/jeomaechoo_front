@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Menu } from "../interfaces/menu.interface";
-import { SERVER_URL } from "../../env";
+import { SERVER_URL } from "../env";
 
 export const addMenu = async (menu: Menu, imageFile: File) => {
   try {
