@@ -11,19 +11,22 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@master
-        
+
       - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
-            node-version: 18.x
+          node-version: 18.x
 
       - name: Install Dependencies
         run: |
-            npm install -g yarn
-            yarn install
+          npm install -g yarn
+          yarn install
 
       - name: Build React Application
         run: yarn build
+        env:
+          CI: ""
+          SERVER_URL: ${{ secrets.SERVER_URL }}
 
       - name: Deploy
         env:
