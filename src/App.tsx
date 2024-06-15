@@ -142,7 +142,9 @@ const App: React.FC<{}> = () => {
           <ModalContent>
             <h2>메뉴를 추가해볼까요?🙇‍♂️</h2>
             <BlackButton onClick={handleAddMenu}>추가하러가기</BlackButton>
-            <WhiteButton onClick={handleCloseModal}>다음에 하기</WhiteButton>
+            <WhiteButton onClick={handleSuccessModalClose}>
+              다음에 하기
+            </WhiteButton>
           </ModalContent>
         </Modal>
 
