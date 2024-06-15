@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Menu } from "../interfaces/menu.interface";
+import { SERVER_URL } from "../../env";
 
 export const addMenu = async (menu: Menu, imageFile: File) => {
   try {
@@ -7,7 +8,7 @@ export const addMenu = async (menu: Menu, imageFile: File) => {
     formData.append("name", menu.name);
     formData.append("image", imageFile);
 
-    const response = await axios.post("http://localhost:8080/menu", formData, {
+    const response = await axios.post(`${SERVER_URL}/menu`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
